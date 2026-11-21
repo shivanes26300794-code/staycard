@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import{notFound} from "next/navigation";
 import { getStay } from "../../../lib/stays";
 
 // TODO (Task 2 — dynamic routes & not-found): this page is broken in two ways.
@@ -11,24 +13,41 @@ import { getStay } from "../../../lib/stays";
 // TODO (Task 3 — images): swap the <img> for next/image. This is the hero image, so give
 // it `priority` (it's above the fold) plus width/height.
 
-export default function StayPage({ params }: { params: { id: string } }) {
-  const stay = getStay(params.id);
+export default async function StayPage({
+   params,
+}: { 
+  params: Promise<{ id: string } >;
+}) {
+  const {id} =await params;
+  const stay = getStay(id);
+
+  if (!stay) {
+    notFound();
+  }
 
   return (
     <article className="detail">
       <Link href="/" className="back">
         ← Back to stays
       </Link>
-      <img src={stay!.image} alt={stay!.name} className="detail-img" />
+
+      <Image 
+       src={stay.image} 
+       alt={stay.name} 
+       width={900}
+       height={500}
+       className="detail-image" 
+      />
+
       <h1>
-        {stay!.emoji} {stay!.name}
+        {stay.emoji} {stay.name}
       </h1>
-      <p className="muted">{stay!.location}</p>
+      <p className="muted">{stay.location}</p>
       <p className="price">
-        ${stay!.pricePerNight}
-        <span>/night</span> · ⭐ {stay!.rating}
+        ${stay.pricePerNight}
+        <span>/night</span> 
       </p>
-      <p>{stay!.blurb}</p>
+      <p>{stay.blurb}</p>
     </article>
   );
 }

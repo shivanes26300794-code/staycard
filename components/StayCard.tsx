@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Stay } from "../lib/stays";
 
 // TODO (Task 3 — images): replace the plain <img> below with next/image (<Image />).
@@ -10,15 +11,20 @@ import type { Stay } from "../lib/stays";
 export default function StayCard({ stay }: { stay: Stay }) {
   return (
     <Link href={`/stay/${stay.id}`} className="card">
-      <img src={stay.image} alt={stay.name} className="card-img" />
+      <Image 
+      src={stay.image} 
+      alt={stay.name} 
+      width={600}
+      height={400}
+      className="card-img"
+      />
       <div className="card-body">
         <h3>
           {stay.emoji} {stay.name}
         </h3>
         <p className="muted">{stay.location}</p>
         <p className="price">
-          ${stay.pricePerNight}
-          <span>/night</span> · ⭐ {stay.rating}
+          ${stay.pricePerNight} <span>/night</span> · ⭐ {stay.rating}
         </p>
       </div>
     </Link>
